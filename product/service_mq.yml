@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: mq-service
+spec:
+  ports:
+  - port: 5672
+    nodePort: 20001
+    targetPort: mq-port
+    protocol: TCP
+  - port: 15672
+    nodePort: 20002
+    targetPort: management-port
+    protocol: TCP
+  selector:
+    app: RabbitMQ
+  type: NodePort

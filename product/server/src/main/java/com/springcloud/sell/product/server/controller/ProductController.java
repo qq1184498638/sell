@@ -1,6 +1,8 @@
 package com.springcloud.sell.product.server.controller;
 
 import com.google.common.collect.Lists;
+import com.springcloud.sell.product.common.domain.DeceaseStockInPut;
+import com.springcloud.sell.product.common.domain.ProductInfoOutPut;
 import com.springcloud.sell.product.server.VO.ProductInfoVO;
 import com.springcloud.sell.product.server.VO.ProductVO;
 import com.springcloud.sell.product.server.domian.ProductCategory;
@@ -10,9 +12,7 @@ import com.springcloud.sell.product.server.service.ProductService;
 import com.springcloud.sell.product.server.utils.ServerResponse;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -64,5 +64,21 @@ public class ProductController {
 
         return ServerResponse.createBySuccess(list);
     }
+
+    /**
+     * 获取商品列表（给订单服务用的）
+     */
+    @PostMapping("/listForOrder")
+    public List<ProductInfoOutPut> listForOrder(@RequestBody List<String> productIdList){
+        List<ProductInfoOutPut> list = productService.findList(productIdList);
+        return list;
+    }
+
+    @PostMapping("/decreaseStock")
+    public void decreaseStock(@RequestBody List<DeceaseStockInPut> deceaseStockInPutList){
+        productService.decreaseStock(deceaseStockInPutList);
+    }
+
+
 
 }
